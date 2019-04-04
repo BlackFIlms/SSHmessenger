@@ -1,0 +1,55 @@
+﻿<Window x:Class="SSHmessenger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SSHmessenger"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="360" Width="600">
+    <Grid x:Name="gridBase">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <TextBlock Background="Wheat" Text="" Grid.ColumnSpan="7" Grid.Row="0" Grid.RowSpan="1"></TextBlock>
+        <TextBlock Background="Wheat" Text="SSH messenger" TextBlock.FontWeight="Bold" TextBlock.TextAlignment="Center" TextBlock.FontSize="20" TextBlock.Foreground="Black" Grid.ColumnSpan="7" VerticalAlignment="Top" Height="75" Grid.Row="1" Grid.RowSpan="1"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
+            <StackPanel>
+                <TextBlock Text="IP ssh server" TextBlock.TextAlignment="Left" TextBlock.FontSize="10" Margin="5 0 0 3"></TextBlock>
+                <TextBox x:Name="IPField" BorderBrush="Black" Text="0.0.0.0" TextBlock.FontSize="12" Width="92" Height="16"></TextBox>
+            </StackPanel>
+            <StackPanel Width="110">
+                <TextBlock Text="Port ssh server" TextBlock.FontSize="10" Margin="30 0 0 3"/>
+                <TextBox x:Name="PortField" BorderBrush="Black" Text="22" TextBlock.TextAlignment="Left" TextBlock.FontSize="12" HorizontalAlignment="Left" Margin="30 0 0 0" Width="32" Height="16"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="3">
+            <TextBlock Text="User" TextBlock.FontSize="10" Margin="5 0 0 3"></TextBlock>
+            <TextBox x:Name="UserField" BorderBrush="Black" Text="" TextBlock.TextAlignment="Center" TextBlock.FontSize="12" Height="16"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="4">
+            <TextBlock Text="Password" TextBlock.FontSize="10" Margin="5 0 0 3"></TextBlock>
+            <PasswordBox x:Name="PassField" BorderBrush="Black" Password="" TextBlock.TextAlignment="Center" TextBlock.FontSize="12" Height="16"></PasswordBox>
+        </StackPanel>
+        <TextBlock x:Name="Status" Text="You are not connected." TextBlock.TextAlignment="Center" TextBlock.FontSize="10" TextBlock.Foreground="Red" Grid.Column="1" Grid.Row="7"></TextBlock>
+        <StackPanel Grid.Column="3" Grid.Row="2" Grid.RowSpan="5">
+            <TextBlock Text="Message" TextBlock.FontSize="10" TextBlock.TextAlignment="Center" Margin="0 5 0 0"></TextBlock>
+            <TextBox x:Name="MessageField" Text="" TextBlock.FontSize="12" Height="80" Margin="0 5 0 5"/>
+            <Button x:Name="Send"  Click="ButtonClickSend" Content="Send" Margin="0 5 0 0"/>
+        </StackPanel>
+    </Grid>
+</Window>
