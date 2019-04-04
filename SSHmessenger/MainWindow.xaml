@@ -5,8 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SSHmessenger"
         mc:Ignorable="d"
-        Title="MainWindow" Height="360" Width="600">
-    <Grid x:Name="gridBase">
+        Title="SSHmessenger" Height="400" Width="600">
+
+    <!--<Window.Resources>
+        <ControlTemplate x:Key="ButtonTemplate" TargetType="Button">
+            <Border BorderThickness="1" CornerRadius="2" Name="border"
+                    TextBlock.Foreground="Black" TextBlock.TextAlignment="Center" BorderBrush="Black">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                        <GradientStop Color="#FFA2A2A2"/>
+                        <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <ContentPresenter RecognizesAccessKey="True" Margin="{TemplateBinding Padding}"></ContentPresenter>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="border" Property="Background" Value="#FF9B9B9B"></Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="border" Property="BorderBrush" Value="#FF838367"></Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>-->
+
+    <Grid x:Name="gridBase" Background="#FF2D2D2D">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60"/>
             <ColumnDefinition Width="200"/>
@@ -16,40 +40,47 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <TextBlock Background="Wheat" Text="" Grid.ColumnSpan="7" Grid.Row="0" Grid.RowSpan="1"></TextBlock>
-        <TextBlock Background="Wheat" Text="SSH messenger" TextBlock.FontWeight="Bold" TextBlock.TextAlignment="Center" TextBlock.FontSize="20" TextBlock.Foreground="Black" Grid.ColumnSpan="7" VerticalAlignment="Top" Height="75" Grid.Row="1" Grid.RowSpan="1"/>
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
+        <StackPanel Grid.ColumnSpan="7" Grid.Row="0" Grid.RowSpan="1">
+            <TextBlock Text="SSH messenger" TextBlock.FontFamily="Raleway" TextBlock.Foreground="White" TextBlock.FontSize="26" TextBlock.TextAlignment="Center" Margin="0 15 0 0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
             <StackPanel>
-                <TextBlock Text="IP ssh server" TextBlock.TextAlignment="Left" TextBlock.FontSize="10" Margin="5 0 0 3"></TextBlock>
-                <TextBox x:Name="IPField" BorderBrush="Black" Text="0.0.0.0" TextBlock.FontSize="12" Width="92" Height="16"></TextBox>
+                <TextBlock Text="IP ssh server" TextBlock.Foreground="White" TextBlock.FontSize="11" TextBlock.TextAlignment="Left" Margin="5 0 0 5"/>
+                <TextBox x:Name="IPField" BorderBrush="Black" Text="0.0.0.0" TextBlock.FontSize="12" Width="92" Height="16"/>
             </StackPanel>
             <StackPanel Width="110">
-                <TextBlock Text="Port ssh server" TextBlock.FontSize="10" Margin="30 0 0 3"/>
-                <TextBox x:Name="PortField" BorderBrush="Black" Text="22" TextBlock.TextAlignment="Left" TextBlock.FontSize="12" HorizontalAlignment="Left" Margin="30 0 0 0" Width="32" Height="16"/>
+                <TextBlock Text="Port ssh server" TextBlock.Foreground="White" TextBlock.FontSize="11" Margin="30 0 0 5"/>
+                <TextBox x:Name="PortField" BorderBrush="Black" Text="22" TextBlock.FontSize="12" TextBlock.TextAlignment="Left" HorizontalAlignment="Left" Margin="30 0 0 0" Width="32" Height="16"/>
             </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="3">
-            <TextBlock Text="User" TextBlock.FontSize="10" Margin="5 0 0 3"></TextBlock>
-            <TextBox x:Name="UserField" BorderBrush="Black" Text="" TextBlock.TextAlignment="Center" TextBlock.FontSize="12" Height="16"></TextBox>
+        <StackPanel x:Name="connectionData" Grid.Column="1" Grid.Row="2" Grid.RowSpan="3">
+            <TextBlock Text="User" TextBlock.Foreground="White" TextBlock.FontSize="11" Margin="5 0 0 5"/>
+            <TextBox x:Name="UserField" BorderBrush="Black" Text="" TextBlock.TextAlignment="Center" TextBlock.FontSize="12" Height="16"/>
+            <TextBlock Text="Password" TextBlock.Foreground="White" TextBlock.FontSize="11" Margin="5 10 0 5"/>
+            <PasswordBox x:Name="PassField" BorderBrush="Black" Password="" TextBlock.TextAlignment="Center" TextBlock.FontSize="12" Height="16"/>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="4">
-            <TextBlock Text="Password" TextBlock.FontSize="10" Margin="5 0 0 3"></TextBlock>
-            <PasswordBox x:Name="PassField" BorderBrush="Black" Password="" TextBlock.TextAlignment="Center" TextBlock.FontSize="12" Height="16"></PasswordBox>
+        <TextBlock x:Name="Status" Text="You are not connected." TextBlock.TextAlignment="Center" TextBlock.FontSize="10" TextBlock.Foreground="Red" Grid.Column="1" Grid.Row="7"/>
+        <StackPanel Grid.Column="2" Grid.Row="1" Grid.RowSpan="3">
+            <Button x:Name="SaveData" BorderBrush="{x:Null}" Width="25" Height="25" Margin="0 10 0 0">
+                <Border Visibility="Hidden"/>
+                <Button.Background>
+                    <ImageBrush ImageSource="pic/save-icon-256-684454913-white-resized.png" Stretch="UniformToFill"/>
+                </Button.Background>
+            </Button>
         </StackPanel>
-        <TextBlock x:Name="Status" Text="You are not connected." TextBlock.TextAlignment="Center" TextBlock.FontSize="10" TextBlock.Foreground="Red" Grid.Column="1" Grid.Row="7"></TextBlock>
-        <StackPanel Grid.Column="3" Grid.Row="2" Grid.RowSpan="5">
-            <TextBlock Text="Message" TextBlock.FontSize="10" TextBlock.TextAlignment="Center" Margin="0 5 0 0"></TextBlock>
-            <TextBox x:Name="MessageField" Text="" TextBlock.FontSize="12" Height="80" Margin="0 5 0 5"/>
-            <Button x:Name="Send"  Click="ButtonClickSend" Content="Send" Margin="0 5 0 0"/>
+        <StackPanel Grid.Column="3" Grid.Row="1" Grid.RowSpan="5">
+            <TextBlock Text="Message" TextBlock.Foreground="White" TextBlock.FontSize="11" TextBlock.TextAlignment="Center" Margin="0 0 0 0"/>
+            <TextBox x:Name="MessageField" Text="" TextBlock.FontSize="12" Height="80" Margin="0 5 0 0"/>
+            <Button x:Name="Send" Click="ButtonClickSend" Content="Send" Width="100" Height="20" Margin="0 10 0 0"/>
         </StackPanel>
     </Grid>
 </Window>

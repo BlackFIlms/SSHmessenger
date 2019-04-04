@@ -25,41 +25,30 @@ namespace SSHmessenger
         //Define SshClient.
         PasswordConnectionInfo connectionInfo;
         SshClient sshClient;
-        TimeSpan checkConnectTimer;
 
         public MainWindow()
         {
             InitializeComponent();
 
             // Create the UI elements.
-            Button but1 = new Button();
             Button ConnectToHost = new Button();
 
             // Set properties on elements.
             ConnectToHost.Content = "Connect";
-            ConnectToHost.Height = 30d;
+            ConnectToHost.Margin = new Thickness(0, 10, 0, 0);
+            ConnectToHost.Width = 100;
+            ConnectToHost.Height = 20;
 
             // Attach event handler.
             ConnectToHost.Click += new RoutedEventHandler(ButtonClickConnect);
 
             // Attach Elements to Grid.
-            gridBase.Children.Add(ConnectToHost);
-
+            connectionData.Children.Capacity++;
+            connectionData.Children.Insert(connectionData.Children.Count, ConnectToHost);
+            
             // Set position for elements.
             Grid.SetColumn(ConnectToHost, 1);
             Grid.SetRow(ConnectToHost, 6);
-
-            // Set values for connection.
-            connectionInfo = new PasswordConnectionInfo(IPField.Text, Convert.ToInt32(PortField.Text), UserField.Text, PassField.Password);
-            connectionInfo.Timeout = TimeSpan.FromSeconds(10);
-            sshClient = new SshClient(connectionInfo);
-            //sshClient.KeepAliveInterval = TimeSpan.FromSeconds(30);
-
-            //CheckConnectOnTime
-            System.Timers.Timer timer = new System.Timers.Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
-            timer.AutoReset = true;
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(CheckConnectOnTime);
-            timer.Start();
         }
 
         ~MainWindow()
@@ -71,16 +60,47 @@ namespace SSHmessenger
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("Error." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
             }
         }
 
-        private void ButtonClickConnect(object sender, RoutedEventArgs e)
+        private void ButtonClickConnect(object sender, RoutedEventArgs e) //Processing button click.
         {
             ConnectToServer();
         }
         private void ConnectToServer()
         {
+            // Init.
+            try
+            {
+                // Set values for connection.
+                connectionInfo = new PasswordConnectionInfo(IPField.Text, Convert.ToInt32(PortField.Text), UserField.Text, PassField.Password);
+                connectionInfo.Timeout = TimeSpan.FromSeconds(10);
+
+                // Init SSH object.
+                sshClient = new SshClient(connectionInfo);
+                //sshClient.KeepAliveInterval = TimeSpan.FromSeconds(30);
+
+                // CheckConnectOnTime
+                System.Timers.Timer timer = new System.Timers.Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
+                timer.AutoReset = true;
+                timer.Elapsed += new System.Timers.ElapsedEventHandler(CheckConnectOnTime);
+                timer.Start();
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Заполните все поля!");
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Неверный формат входных данных.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
+            }
+
+            // Connect.
             //using (sshClient) {ConnectionCode} - If use this, then sshClient will be Dispose, when using finished his job.
             try
             {
@@ -100,13 +120,28 @@ namespace SSHmessenger
                     Status.Foreground = new SolidColorBrush(Colors.Red);
                 }
             }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Неверный формат данных!");
+            }
+            catch (SshAuthenticationException ex)
+            {
+                MessageBox.Show("Problem with autentication." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
+            }
+            catch (SshConnectionException ex)
+            {
+                MessageBox.Show("Problem with connection." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
+            }
+            catch (SshException ex)
+            {
+                MessageBox.Show("Some problems with SSH." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
+            }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("Error." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
             }
         }
-
-        private bool CheckConnect()
+        private bool CheckConnect() //Check connect for ConnectToServer method.
         {
             try
             {
@@ -135,6 +170,7 @@ namespace SSHmessenger
                 return false;
             }
         }
+
         private void CheckConnectOnTime(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (sshClient.IsConnected)
@@ -157,7 +193,7 @@ namespace SSHmessenger
             }
         }
         
-        private void ButtonClickSend(object sender, RoutedEventArgs e)
+        private void ButtonClickSend(object sender, RoutedEventArgs e) //Processing button click.
         {
             try
             {
@@ -172,14 +208,5 @@ namespace SSHmessenger
                 MessageBox.Show(ex.ToString());
             }
         }
-        /*private void Client_Error(object sender, Renci.SshNet.Common.ExceptionEventArgs e)
-        {
-            throw new SshConnectionException();
-            throw new SshAuthenticationException();
-            throw new SshException();
-            throw new SshOperationTimeoutException();
-            throw new SshPassPhraseNullOrEmptyException();
-            throw new NotImplementedException();
-        }*/
     }
 }

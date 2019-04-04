@@ -98,5 +98,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\save-icon-256-684454913-white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\save-icon-256-684454913-white-resized.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
