@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * OpenSource SSH messenger
+ * Designed by BlackFilms in 2019.
+ * For fast send message to SSH protocol.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
