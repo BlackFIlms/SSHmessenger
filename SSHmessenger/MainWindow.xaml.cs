@@ -2,6 +2,15 @@
  * OpenSource SSH messenger
  * Designed by BlackFilms in 2019.
  * For fast send message to SSH protocol.
+ * Version: 1.0.9.1
+ * 
+ * Version guide: a.a.b.c
+ * a - version number.
+ * b - build number.
+ * c - release number(0 - Release version, 1 - Beta version, 2 - Dev version).
+ * 
+ * It's betta version messenger.
+ * Perhaps there are bugs and errors.
  * 
  * Remark: in this version messenger, passwords don't encrypted!
  * Perhaps in the future, this feature will appear.
