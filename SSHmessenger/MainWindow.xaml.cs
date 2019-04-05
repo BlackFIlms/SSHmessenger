@@ -2,7 +2,7 @@
  * OpenSource SSH messenger
  * Designed by BlackFilms in 2019.
  * For fast send message to SSH protocol.
- * Version: 1.0.9.1
+ * Version: 1.0.10.1
  * 
  * Version guide: a.a.b.c
  * a - version number.
