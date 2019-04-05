@@ -56,11 +56,18 @@ namespace SSHmessenger
              * Then used this data.
              * Else used default values.
             */
-            ReadDataFromFile(out string IP, out string Port, out string User, out string Password);
-            IPField.Text = IP;
-            PortField.Text = Port;
-            UserField.Text = User;
-            PassField.Password = Password;
+            try
+            {
+                ReadDataFromFile(out string IP, out string Port, out string User, out string Password);
+                IPField.Text = IP;
+                PortField.Text = Port;
+                UserField.Text = User;
+                PassField.Password = Password;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         ~MainWindow()
@@ -229,7 +236,7 @@ namespace SSHmessenger
             string Password = PassField.Password;
 
             //The password is not encrypted when saving, therefore, it is not recommended to save it.
-            if (Password != "" || Password != null)
+            if (!String.IsNullOrWhiteSpace(Password) || !String.IsNullOrEmpty(Password))
             {
                 MessageBoxResult warningPassword = MessageBox.Show("Не рекомендуется сохранять пароль, т.к. он сохраняется в незашифрованном виде." + "\r\n" + "Всё равно сохранить?", "Save not encrypted password.", MessageBoxButton.YesNo);
                 if (warningPassword == MessageBoxResult.Yes)
@@ -241,7 +248,7 @@ namespace SSHmessenger
                     SaveDataToFile(IP, Port, User);
                 }
             }
-            else if (Password == "" || Password == null)
+            else if (String.IsNullOrWhiteSpace(Password) || String.IsNullOrEmpty(Password))
             {
                 SaveDataToFile(IP, Port, User);
             }
