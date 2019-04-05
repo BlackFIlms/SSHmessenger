@@ -99,10 +99,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="pic\save-icon-256-684454913-white.png" />
+    <Resource Include="pic\save-icon-white.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="pic\save-icon-256-684454913-white-resized.png" />
+    <Resource Include="pic\save-icon-white-resized.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pic\save-icon-dark-resized.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

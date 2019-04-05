@@ -8,6 +8,22 @@
         Title="SSHmessenger" Height="400" Width="600">
 
     <!--<Window.Resources>
+        <ControlTemplate x:Key="SaveTemplate" TargetType="Button">
+            <Border Name="border" BorderBrush="{x:Null}" BorderThickness="1">
+                <Border.Background>
+                    <ImageBrush ImageSource="pic/save-icon-256-684454913-white-resized.png" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="border" Property="ImageBrush.ImageSource" Value="pic/save-icon-256-684454913-dark-resized.png"></Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="border" Property="ImageBrush.ImageSource" Value="pic/save-icon-256-684454913-dark-resized.png"></Setter>
+                    <Setter TargetName="border" Property="BorderBrush" Value="#FF22B2E8"></Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
         <ControlTemplate x:Key="ButtonTemplate" TargetType="Button">
             <Border BorderThickness="1" CornerRadius="2" Name="border"
                     TextBlock.Foreground="Black" TextBlock.TextAlignment="Center" BorderBrush="Black">
@@ -70,11 +86,31 @@
         </StackPanel>
         <TextBlock x:Name="Status" Text="You are not connected." TextBlock.TextAlignment="Center" TextBlock.FontSize="10" TextBlock.Foreground="Red" Grid.Column="1" Grid.Row="7"/>
         <StackPanel Grid.Column="2" Grid.Row="1" Grid.RowSpan="3">
-            <Button x:Name="SaveData" BorderBrush="{x:Null}" Width="25" Height="25" Margin="0 10 0 0">
-                <Border Visibility="Hidden"/>
-                <Button.Background>
-                    <ImageBrush ImageSource="pic/save-icon-256-684454913-white-resized.png" Stretch="UniformToFill"/>
-                </Button.Background>
+            <Button x:Name="SaveData" Click="SaveData_Click" ToolTip="Save Connection Settings" Width="25" Height="25" Margin="0 10 0 0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="border">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="pic/save-icon-white-resized.png" Stretch="UniformToFill"/>
+                                        </Border.Background>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" TargetName="border">
+                                                <Setter.Value>
+                                                    <ImageBrush ImageSource="pic/save-icon-dark-resized.png" Stretch="UniformToFill"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
             </Button>
         </StackPanel>
         <StackPanel Grid.Column="3" Grid.Row="1" Grid.RowSpan="5">

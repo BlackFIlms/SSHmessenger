@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Renci.SshNet;
 using Renci.SshNet.Common;
+using System.IO;
 
 namespace SSHmessenger
 {
@@ -49,6 +50,17 @@ namespace SSHmessenger
             // Set position for elements.
             Grid.SetColumn(ConnectToHost, 1);
             Grid.SetRow(ConnectToHost, 6);
+
+            /* Set values for connection.
+             * If you have saved data for connection in file C:\Users\Public\Documents\SshData.txt
+             * Then used this data.
+             * Else used default values.
+            */
+            ReadDataFromFile(out string IP, out string Port, out string User, out string Password);
+            IPField.Text = IP;
+            PortField.Text = Port;
+            UserField.Text = User;
+            PassField.Password = Password;
         }
 
         ~MainWindow()
@@ -208,5 +220,93 @@ namespace SSHmessenger
                 MessageBox.Show(ex.ToString());
             }
         }
+
+        private void SaveData_Click(object sender, RoutedEventArgs e)
+        {
+            string IP = IPField.Text;
+            string Port = PortField.Text;
+            string User = UserField.Text;
+            string Password = PassField.Password;
+
+            //The password is not encrypted when saving, therefore, it is not recommended to save it.
+            if (Password != "" || Password != null)
+            {
+                MessageBoxResult warningPassword = MessageBox.Show("Не рекомендуется сохранять пароль, т.к. он сохраняется в незашифрованном виде." + "\r\n" + "Всё равно сохранить?", "Save not encrypted password.", MessageBoxButton.YesNo);
+                if (warningPassword == MessageBoxResult.Yes)
+                {
+                    SaveDataToFile(IP, Port, User, Password);
+                }
+                else if (warningPassword == MessageBoxResult.No)
+                {
+                    SaveDataToFile(IP, Port, User);
+                }
+            }
+            else if (Password == "" || Password == null)
+            {
+                SaveDataToFile(IP, Port, User);
+            }
+        }
+        private void SaveDataToFile(string IP, string Port, string User, string Password = "")
+        {
+            //Path to file for save settings.
+            string path = @"C:\Users\Public\Documents\SshData.txt";
+            //Save data.
+            using (StreamWriter sw = File.CreateText(path))
+            {
+                sw.WriteLine("IP: " + IP);
+                sw.WriteLine("Port: " + Port);
+                sw.WriteLine("User: " + User);
+                sw.WriteLine("Password: " + Password);
+            }
+        }
+        private void ReadDataFromFile(out string IP, out string Port, out string User, out string Password)
+        {
+            //Set default values.
+            IP = "0.0.0.0";
+            Port = "22";
+            User = "";
+            Password = "";
+
+            //Path for read saved settings.
+            string path = @"C:\Users\Public\Documents\SshData.txt";
+            if (File.Exists(path))
+            {
+                using (StreamReader sr = File.OpenText(path))
+                {
+                    //Init list.
+                    List<string> dataLines = new List<string>();
+                    //Get data and insert to list.
+                    while (sr.EndOfStream != true)
+                    {
+                        dataLines.Add(sr.ReadLine());
+                    }
+                    
+                    //Get data and insert to out vars.
+                    IP = System.Text.RegularExpressions.Regex.Replace(dataLines.Find(x => x.Contains("IP: ")), @"IP: ", "");
+                    Port = System.Text.RegularExpressions.Regex.Replace(dataLines.Find(x => x.Contains("Port: ")), @"Port: ", "");
+                    User = System.Text.RegularExpressions.Regex.Replace(dataLines.Find(x => x.Contains("User: ")), @"User: ", "");
+                    Password = System.Text.RegularExpressions.Regex.Replace(dataLines.Find(x => x.Contains("Password: ")), @"Password: ", "");
+                }
+            }
+        }
+
+        //Don't work.
+        /*private void SaveData_MouseEnter(object sender, MouseEventArgs e)
+        {
+            SaveData.BorderThickness = new Thickness(0);
+            ImageBrush img = new ImageBrush();
+            img.ImageSource = new BitmapImage(new Uri("../../pic/save-icon-dark-resized.png", UriKind.Relative));
+            img.Stretch = Stretch.UniformToFill;
+            SaveData.Background = img;
+        }
+
+        private void SaveData_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SaveData.BorderThickness = new Thickness(0);
+            ImageBrush img = new ImageBrush();
+            img.ImageSource = new BitmapImage(new Uri("../../pic/save-icon-white-resized.png", UriKind.Relative));
+            img.Stretch = Stretch.UniformToFill;
+            SaveData.Background = img;
+        }*/
     }
 }
