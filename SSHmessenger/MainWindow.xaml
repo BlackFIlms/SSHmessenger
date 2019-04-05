@@ -71,18 +71,18 @@
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
             <StackPanel>
                 <TextBlock Text="IP ssh server" TextBlock.Foreground="White" TextBlock.FontSize="11" TextBlock.TextAlignment="Left" Margin="5 0 0 5"/>
-                <TextBox x:Name="IPField" BorderBrush="Black" Text="0.0.0.0" TextBlock.FontSize="12" Width="92" Height="16"/>
+                <TextBox x:Name="IPField" BorderBrush="Black" Text="0.0.0.0" TextBlock.FontSize="12" Width="92" Height="18"/>
             </StackPanel>
             <StackPanel Width="110">
                 <TextBlock Text="Port ssh server" TextBlock.Foreground="White" TextBlock.FontSize="11" Margin="30 0 0 5"/>
-                <TextBox x:Name="PortField" BorderBrush="Black" Text="22" TextBlock.FontSize="12" TextBlock.TextAlignment="Left" HorizontalAlignment="Left" Margin="30 0 0 0" Width="32" Height="16"/>
+                <TextBox x:Name="PortField" BorderBrush="Black" Text="22" TextBlock.FontSize="12" TextBlock.TextAlignment="Left" HorizontalAlignment="Left" Margin="30 0 0 0" Width="32" Height="18"/>
             </StackPanel>
         </StackPanel>
         <StackPanel x:Name="connectionData" Grid.Column="1" Grid.Row="2" Grid.RowSpan="3">
             <TextBlock Text="User" TextBlock.Foreground="White" TextBlock.FontSize="11" Margin="5 0 0 5"/>
-            <TextBox x:Name="UserField" BorderBrush="Black" Text="" TextBlock.TextAlignment="Center" TextBlock.FontSize="12" Height="16"/>
+            <TextBox x:Name="UserField" BorderBrush="Black" Text="" TextBlock.TextAlignment="Center" TextBlock.FontSize="12" Height="18"/>
             <TextBlock Text="Password" TextBlock.Foreground="White" TextBlock.FontSize="11" Margin="5 10 0 5"/>
-            <PasswordBox x:Name="PassField" BorderBrush="Black" Password="" TextBlock.TextAlignment="Center" TextBlock.FontSize="12" Height="16"/>
+            <PasswordBox x:Name="PassField" BorderBrush="Black" Password="" TextBlock.TextAlignment="Center" TextBlock.FontSize="12" Height="18"/>
         </StackPanel>
         <TextBlock x:Name="Status" Text="You are not connected." TextBlock.TextAlignment="Center" TextBlock.FontSize="10" TextBlock.Foreground="Red" Grid.Column="1" Grid.Row="7"/>
         <StackPanel Grid.Column="2" Grid.Row="1" Grid.RowSpan="3">
