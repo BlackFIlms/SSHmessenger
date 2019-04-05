@@ -2,6 +2,9 @@
  * OpenSource SSH messenger
  * Designed by BlackFilms in 2019.
  * For fast send message to SSH protocol.
+ * 
+ * Remark: in this version messenger, passwords don't encrypted!
+ * Perhaps in the future, this feature will appear.
 */
 
 using System;
@@ -31,7 +34,7 @@ namespace SSHmessenger
     {
         //Define SshClient.
         PasswordConnectionInfo connectionInfo;
-        SshClient sshClient;
+        SshClient sshClientInit;
 
         public MainWindow()
         {
@@ -74,28 +77,8 @@ namespace SSHmessenger
             {
                 MessageBox.Show(ex.ToString());
             }
-        }
 
-        ~MainWindow()
-        {
-            try
-            {
-                sshClient.Disconnect();
-                sshClient.Dispose();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
-            }
-        }
-
-        private void ButtonClickConnect(object sender, RoutedEventArgs e) //Processing button click.
-        {
-            ConnectToServer();
-        }
-        private void ConnectToServer()
-        {
-            // Init.
+            // Init ssh client object.
             try
             {
                 // Set values for connection.
@@ -103,7 +86,7 @@ namespace SSHmessenger
                 connectionInfo.Timeout = TimeSpan.FromSeconds(10);
 
                 // Init SSH object.
-                sshClient = new SshClient(connectionInfo);
+                sshClientInit = new SshClient(connectionInfo);
                 //sshClient.KeepAliveInterval = TimeSpan.FromSeconds(30);
 
                 // CheckConnectOnTime
@@ -124,7 +107,27 @@ namespace SSHmessenger
             {
                 MessageBox.Show("Error." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
             }
+        }
 
+        ~MainWindow()
+        {
+            try
+            {
+                sshClientInit.Disconnect();
+                sshClientInit.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
+            }
+        }
+
+        private void ButtonClickConnect(object sender, RoutedEventArgs e) //Processing button click.
+        {
+            ConnectToServer(sshClientInit);
+        }
+        private void ConnectToServer(SshClient sshClient)
+        {
             // Connect.
             //using (sshClient) {ConnectionCode} - If use this, then sshClient will be Dispose, when using finished his job.
             try
@@ -166,7 +169,7 @@ namespace SSHmessenger
                 MessageBox.Show("Error." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
             }
         }
-        private bool CheckConnect() //Check connect for ConnectToServer method.
+        private bool CheckConnect(SshClient sshClient) //Check connect for ConnectToServer method.
         {
             try
             {
@@ -183,8 +186,8 @@ namespace SSHmessenger
                     MessageBoxResult noConnection = MessageBox.Show("You are not connected." + "\r\n" + "Want to connect?", "No cennection.", MessageBoxButton.YesNo);
                     if (noConnection == MessageBoxResult.Yes)
                     {
-                        ConnectToServer();
-                        CheckConnect();
+                        ConnectToServer(sshClient);
+                        CheckConnect(sshClient);
                     }
                     return false;
                 }
@@ -198,7 +201,7 @@ namespace SSHmessenger
 
         private void CheckConnectOnTime(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (sshClient.IsConnected)
+            if (sshClientInit.IsConnected)
             {
                 Status.Dispatcher.BeginInvoke(new Action(delegate () //Enables asynchronous calls from multiple threads.
                 {
@@ -222,9 +225,9 @@ namespace SSHmessenger
         {
             try
             {
-                if (CheckConnect())
+                if (CheckConnect(sshClientInit))
                 {
-                    sshClient.RunCommand("msg * " + MessageField.Text);
+                    sshClientInit.RunCommand("msg * " + MessageField.Text);
                     MessageBox.Show("Успешно отправлено");
                 }
             }
