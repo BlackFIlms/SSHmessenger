@@ -2,7 +2,7 @@
  * OpenSource SSH messenger
  * Designed by BlackFilms in 2019.
  * For fast send message to SSH protocol.
- * Version: 1.0.10.1
+ * Version: 1.1.1.1
  * 
  * Version guide: a.a.b.c
  * a - version number.
@@ -87,6 +87,30 @@ namespace SSHmessenger
                 MessageBox.Show(ex.ToString());
             }
 
+            //Init connection data.
+            InitConnectionData();
+        }
+
+        ~MainWindow()
+        {
+            try
+            {
+                sshClientInit.Disconnect();
+                sshClientInit.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
+            }
+        }
+
+        private void ButtonClickConnect(object sender, RoutedEventArgs e) //Processing button click.
+        {
+            InitConnectionData();
+            ConnectToServer(sshClientInit);
+        }
+        private void InitConnectionData()
+        {
             // Init ssh client object.
             try
             {
@@ -116,24 +140,6 @@ namespace SSHmessenger
             {
                 MessageBox.Show("Error." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
             }
-        }
-
-        ~MainWindow()
-        {
-            try
-            {
-                sshClientInit.Disconnect();
-                sshClientInit.Dispose();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error." + "\r\n" + "Details:" + "\r\n" + ex.ToString());
-            }
-        }
-
-        private void ButtonClickConnect(object sender, RoutedEventArgs e) //Processing button click.
-        {
-            ConnectToServer(sshClientInit);
         }
         private void ConnectToServer(SshClient sshClient)
         {
@@ -195,6 +201,7 @@ namespace SSHmessenger
                     MessageBoxResult noConnection = MessageBox.Show("You are not connected." + "\r\n" + "Want to connect?", "No cennection.", MessageBoxButton.YesNo);
                     if (noConnection == MessageBoxResult.Yes)
                     {
+                        InitConnectionData();
                         ConnectToServer(sshClient);
                         CheckConnect(sshClient);
                     }
